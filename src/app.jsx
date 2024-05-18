@@ -1,9 +1,31 @@
+import { useState } from "react";
+import Search from "./components/search";
+import Table from "./components/table";
+import { BELTS, CHAMPIONS } from "./data";
+import { filterItemsByTerm } from "./utils";
+
 export default function App() {
+  const [searchTerm, setSearchTerm] = useState("");
+
+  const { terms1: champs, terms2: belts } = filterItemsByTerm({
+    terms1: CHAMPIONS,
+    terms2: BELTS,
+    actionTerm: searchTerm,
+  });
+
+  const handleSearch = (e) => {
+    setSearchTerm(e.target.value);
+  };
+
   return (
-    <div className="bg-gray-100 p-4">
-      <h1 className="text-center text-2xl font-bold text-gray-800">
-        Hello, Tailwind CSS!
-      </h1>
+    <div className="container mx-auto p-8 text-center">
+      <Search handleSearch={handleSearch} />
+      <Table
+        col1={champs}
+        col2={belts}
+        col1Header="Belt"
+        col2Header="Champion"
+      />
     </div>
   );
 }
